@@ -154,6 +154,8 @@ int event_wait(tunnel_t **out_tun, HANDLE *out_h)
 
 		wait_count -= current_wait_count;
 		offset = off + current_wait_count;
+
+		debug(4, "event_wait while, wait_count=%i, offset=%i", wait_count, offset);
 	}
 
 	if (ret == WAIT_FAILED) {

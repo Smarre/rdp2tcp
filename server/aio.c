@@ -115,7 +115,7 @@ int aio_read(
 				info(0, "GetOverlappedResult: ERROR_MORE_DATA (len=%d)", len);
 			} else {
 				ResetEvent(rio->io.hEvent);
-				return syserror("GetOverlappedResult");
+				return syserror("aio_read: GetOverlappedResult");
 			}
 		}
 
@@ -214,7 +214,7 @@ int aio_write(aio_t *wio, HANDLE fd, const char *name)
 		len = 0;
 		if (!GetOverlappedResult(fd, &wio->io, &len, FALSE)) {
 			ResetEvent(wio->io.hEvent);
-			return syserror("GetOverlappedResult");
+			return syserror("aio_write: GetOverlappedResult");
 		}
 		iobuf_consume(obuf, (unsigned int)len);
 		print_xfer(name, 'w', len);
