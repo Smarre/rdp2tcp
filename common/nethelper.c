@@ -16,7 +16,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -74,7 +74,7 @@ int net_update_watch(sock_t *s, iobuf_t *obuf)
 {
 	assert(valid_sock(s) && valid_iobuf(obuf));
 	return WSAEventSelect(s->fd, s->evt,
-								 (iobuf_datalen(obuf) > 0 
+								 (iobuf_datalen(obuf) > 0
 								  	? FD_READ|FD_WRITE|FD_CLOSE
 									: FD_READ|FD_CLOSE));
 }
@@ -93,18 +93,18 @@ const char *net_error(int ret, int err)
 	static char msg[512];
 #endif
 	static const char *actions_errors[] = {
-		"failed to resolve hostname", 
-		"no valid address", 
-		"failed to create socket", 
-		"failed to bind socket", 
-		"failed to setup socket", 
-		"failed to connect", 
-		"failed to receive", 
+		"failed to resolve hostname",
+		"no valid address",
+		"failed to create socket",
+		"failed to bind socket",
+		"failed to setup socket",
+		"failed to connect",
+		"failed to receive",
 		"failed to send"
 	};
 
 	x = ((ret >= NETERR_SEND) && (ret < 0)) ? actions_errors[-ret-1] : "???";
-	
+
 #ifndef _WIN32
 	snprintf(buffer, sizeof(buffer)-1, "%s (%s)", x,
 				(ret == NETERR_RESOLVE ? gai_strerror(err) : strerror(err)));
@@ -421,7 +421,7 @@ int net_read(
 
 	if (net_pending())
 		return 1;
-	
+
 	return -(int)nethelper_error;
 }
 
