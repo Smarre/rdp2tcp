@@ -16,7 +16,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -80,7 +80,7 @@ int commands_parse(iobuf_t *ibuf)
 			return error("invalid command id 0x%02x", cmd);
 
 		if (msg_len < (unsigned int)r2t_min_size[cmd])
-			return error("command 0x%02x too short 0x%08x < 0x%08x", 
+			return error("command 0x%02x too short 0x%08x < 0x%08x",
 					cmd, msg_len, (unsigned int)r2t_min_size[cmd]);
 
 		if (!cmd_handlers[cmd])
