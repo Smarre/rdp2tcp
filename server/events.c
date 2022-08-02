@@ -125,18 +125,40 @@ void event_del_tunnel(unsigned char id)
  * @return the last event type (EVT_xxx) or -1 on error */
 int event_wait(tunnel_t **out_tun, HANDLE *out_h)
 {
-	DWORD ret, off;
+	DWORD ret, off, wait_count;
 	tunnel_t *tun;
 
 	off = (channel_write_pending() ? 0 : 1);
+	wait_count = events_count - off;
 
-	trace_evt("WaitForMultipleObjects: events_count=%i, offset=%i, events: %x", events_count, off, all_events[off]);
-	ret = WaitForMultipleObjects(events_count-off, &all_events[off], FALSE,
-											RDP2TCP_PING_DELAY*1000);
+	debug(3, "WaitForMultipleObjects: events_count=%i, offset=%i", events_count, off);
+	debug(3, "MAXIMUM_WAIT_OBJECTS=%i", MAXIMUM_WAIT_OBJECTS);
+
+	DWORD offset = off;
+	DWORD current_wait_count;
+	while (wait_count > 0) {
+		if (wait_count > MAXIMUM_WAIT_OBJECTS) {
+			current_wait_count = MAXIMUM_WAIT_OBJECTS;
+		} else {
+			current_wait_count = wait_count;
+		}
+		ret = WaitForMultipleObjects(current_wait_count, &all_events[offset], FALSE, RDP2TCP_PING_DELAY * 1000);
+		if (ret == WAIT_FAILED) {
+			assert(GetLastError() != ERROR_INVALID_HANDLE);
+			return syserror("in WaitForMultipleObjects");
+		}
+
+		if (ret == WAIT_TIMEOUT) {
+			return EVT_PING;
+		}
+
+		wait_count -= current_wait_count;
+		offset = off + current_wait_count;
+	}
 
 	if (ret == WAIT_FAILED) {
 		assert(GetLastError() != ERROR_INVALID_HANDLE);
-		return syserror("WaitForMultipleObjects");
+		return syserror("in WaitForMultipleObjects");
 	}
 
 	if (ret == WAIT_TIMEOUT) {

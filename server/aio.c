@@ -126,7 +126,9 @@ int aio_read(
 
 		if (len == min_io_size) { // increase I/O chunks size (perfs..)
 			min_io_size <<= 1;
-			if (min_io_size > NETBUF_MAX_SIZE) min_io_size = NETBUF_MAX_SIZE;
+			if (min_io_size > NETBUF_MAX_SIZE) {
+				min_io_size = NETBUF_MAX_SIZE;
+			}
 			rio->min_io_size = min_io_size;
 		}
 
