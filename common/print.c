@@ -16,7 +16,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -94,12 +94,18 @@ void print_init(void)
 #ifdef DEBUG
 	char *val;
 
+	val = getenv("INFO");
+	if (val) {
+		info_level = atoi(val);
+	}
 	val = getenv("DEBUG");
-	if (val)
+	if (val) {
 		debug_level = atoi(val);
+	}
 	val = getenv("TRACE");
-	if (val)
+	if (val) {
 		tracing_flags = (int)strtoul(val, NULL, 16);
+	}
 	print_fps[3] = stderr;
 #endif
 	print_fps[0] = stderr;
@@ -169,7 +175,7 @@ int error(const char *fmt, ...)
  */
 void print_xfer(const char *name, char rw, unsigned int size)
 {
-	info(1, (rw=='r'?"%-6s          < %-8u":"%-6s %8u >"), name, size);
+	info(4, (rw == 'r' ? "%-6s          < %-8u" : "%-6s %8u >"), name, size);
 }
 
 #ifdef DEBUG
