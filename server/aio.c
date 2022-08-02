@@ -225,7 +225,7 @@ int aio_write(aio_t *wio, HANDLE fd, const char *name)
 	}
 
 #ifdef DEBUG
-	if (debug_level > 0) iobuf_dump(obuf);
+	if (debug_level > 6) iobuf_dump(obuf);
 #endif
 
 	w = 0;

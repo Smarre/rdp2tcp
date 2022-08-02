@@ -55,7 +55,7 @@ int commands_parse(iobuf_t *ibuf)
 	assert(valid_iobuf(ibuf) && (iobuf_datalen(ibuf)>0));
 
 #ifdef DEBUG
-	if (debug_level > 0) iobuf_dump(ibuf);
+	if (debug_level > 6) iobuf_dump(ibuf);
 #endif
 
 	off   = 0;
