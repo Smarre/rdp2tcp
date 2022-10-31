@@ -130,7 +130,7 @@ commands:
 	host, port = '127.0.0.1', 8477
 
 	i = 1
-	while argv[i].startswith('-'):
+	while i in argv and argv[i].startswith('-'):
 		if argv[i] == '-h':
 			pass
 		elif argv[i] == '-p':
